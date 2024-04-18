@@ -16,7 +16,7 @@
 		zephyr,code-partition = &code_partition;
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
-		zmk,kscan = &kscan;
+		zmk,kscan = &side_band_behavior_triggers;
 		zmk,matrix_transform = &ortho_transform;
 		zmk,battery = &vbatt;
 		zephyr,console = &cdc_acm_uart0;
@@ -26,12 +26,23 @@
 		led0 = &blue_led;
 	};
 
+
 	behaviors {
 		hw_soft_off: behavior_hw_soft_off {
 			compatible = "zmk,behavior-soft-off";
 			#binding-cells = <0>;
-			label = "HW_SO";
 			hold-time-ms = <1000>;
+		};
+	};
+
+	side_band_behavior_triggers: side_band_behavior_triggers {
+		compatible = "zmk,kscan-sideband-behaviors";
+		wakeup-source;
+		kscan = <&kscan>;
+		soft_off {
+			column = <0>;
+			row = <8>;
+			bindings = <&hw_soft_off>;
 		};
 	};
 
@@ -39,7 +50,6 @@
 		compatible = "gpio-leds";
 		blue_led: led_0 {
 			gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
-			label = "Blue LED";
 		};
 	};
 
@@ -52,7 +62,6 @@
 
 	vbatt: vbatt {
 		compatible = "zmk,battery-nrf-vddh";
-		label = "BATTERY";
 	};
 
 	wakeup_source: wakeup_source {
@@ -65,26 +74,9 @@
 			;
 	};
 
-	soft_off_behavior_key {
-		compatible = "zmk,gpio-scanned-key-behavior-trigger";
-		status = "okay";
-		bindings = <&hw_soft_off>;
-		key = <&wakeup_key>;
-	};
-
 	soft_off_wakers {
 		compatible = "zmk,soft-off-wakeup-sources";
 		wakeup-sources = <&wakeup_source>;
-	};
-
-	soft_on_off {
-		compatible = "zmk,soft-on-off-gpio";
-
-		input-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-		wakeup-sources = <&kscan>;
-		output-gpios 
-			= <&gpio0 12 GPIO_ACTIVE_HIGH>
-			;
 	};
 
 	ortho_transform: ortho_transform {
@@ -129,7 +121,6 @@
 	kscan: kscan {
 		compatible = "zmk,kscan-gpio-matrix";
 		wakeup-source;
-		label = "KSCAN";
 		debounce-press-ms = <1>;
 		debounce-release-ms = <5>;
 
@@ -152,6 +143,7 @@
 			, <&gpio0 5  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			, <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			, <&gpio0 4  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+			, <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			;
 	};
 };
@@ -177,7 +169,6 @@
 	status = "okay";
 	cdc_acm_uart0: cdc_acm_uart0 {
 		compatible = "zephyr,cdc-acm-uart";
-		label = "CDC_ACM_0";
 	};
 }; 
 
@@ -193,21 +184,17 @@
 		#size-cells = <1>;
 
 		sd_partition: partition@0 {
-			label = "mbr";
 			reg = <0x00000000 0x00001000>;
 		};
 		code_partition: partition@1000 {
-			label = "code_partition";
 			reg = <0x00001000 0x000d3000>;
 		};
 
 		storage_partition: partition@d4000 {
-			label = "storage";
 			reg = <0x000d4000 0x00020000>;
 		};
 
 		boot_partition: partition@f4000 {
-			label = "adafruit_boot";
 			reg = <0x000f4000 0x0000c000>;
 		};
 	};
