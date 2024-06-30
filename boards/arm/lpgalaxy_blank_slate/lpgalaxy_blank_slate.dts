@@ -19,7 +19,6 @@
 		zmk,kscan = &side_band_behavior_triggers;
 		zmk,matrix_transform = &ortho_transform;
 		zmk,battery = &vbatt;
-		zephyr,console = &cdc_acm_uart0;
 	};
 
 	aliases {
@@ -165,11 +164,8 @@
 };
 
 
-&usbd {
+zephyr_udc0: &usbd {
 	status = "okay";
-	cdc_acm_uart0: cdc_acm_uart0 {
-		compatible = "zephyr,cdc-acm-uart";
-	};
 }; 
 
 
