@@ -7,6 +7,19 @@
 /dts-v1/;
 #include <nordic/nrf52840_qiaa.dtsi>
 #include <dt-bindings/zmk/matrix_transform.h>
+#include "lpgalaxy_blank_slate-layouts.dtsi"
+
+&layout_ortho_4x12_all1u {
+	transform = <&ortho_transform>;
+};
+
+&layout_ortho_4x12_1x2u {
+	transform = <&mit_transform>;
+};
+
+&layout_ortho_4x12_2x2u {
+	transform = <&dual_2u_transform>;
+};
 
 / {
 	model = "blank_slate";
@@ -17,7 +30,6 @@
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
 		zmk,kscan = &side_band_behavior_triggers;
-		zmk,matrix_transform = &ortho_transform;
 		zmk,battery = &vbatt;
 	};
 
