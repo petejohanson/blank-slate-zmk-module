@@ -17,4 +17,9 @@
 #     artifact-name: corne_left_with_logging
 #
 ---
-board: [ "lpgalaxy_blank_slate" ]
+include:
+  - board: lpgalaxy_blank_slate
+  - board: lpgalaxy_blank_slate
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: lpgalaxy_blank_slate-studio
