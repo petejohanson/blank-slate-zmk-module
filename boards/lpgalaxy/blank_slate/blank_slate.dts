@@ -7,7 +7,8 @@
 /dts-v1/;
 #include <nordic/nrf52840_qiaa.dtsi>
 #include <dt-bindings/zmk/matrix_transform.h>
-#include "lpgalaxy_blank_slate-layouts.dtsi"
+#include <common/nordic/nrf52840_uf2_boot_mode.dtsi>
+#include "blank_slate-layouts.dtsi"
 
 &layout_ortho_4x12_all1u {
 	transform = <&ortho_transform>;
@@ -158,6 +159,12 @@
 			;
 	};
 };
+
+/*
+&reg0 {
+	status = "okay";
+};
+*/
 
 &adc {
 	status = "okay";

@@ -1,0 +1,5 @@
+board:
+  name: blank_slate
+  vendor: lpgalaxy
+  socs:
+    - name: nrf52840
